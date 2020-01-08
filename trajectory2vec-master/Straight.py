@@ -5,8 +5,6 @@ Created on Thu Dec  5 21:54:29 2019
 @author: HP-USER
 """
 
- 
-from mpl_toolkits.mplot3d import Axes3D
 import random
 import pickle as cPickle  
 import numpy as np
@@ -63,15 +61,13 @@ def sim_data(sampleNum = sampleNum,speedPreSec = speedPreSec,
             x1 = math.cos(angle) * x - math.sin(angle) * y
             y1 = math.cos(angle) * y + math.sin(angle) * x
             turnSample.append([point[0],x1,y1])
-        #print(turnSample)
-        
-        times = []    
-        valuesX = []
-        valuesY = []
+        print(turnSample)
+        times = []
+        values = []
         for i in turnSample:
             times.append(i[0])
-            valuesX.append(i[1])
-            valuesY.append(i[2])
+            values.append(i[1])
+        
         sns.set(style="whitegrid")
     
         #values = firstTraj[1]
@@ -79,15 +75,12 @@ def sim_data(sampleNum = sampleNum,speedPreSec = speedPreSec,
         #print(times)
         #print(values)
         #dates = firstTraj[0]
-        #data = pd.DataFrame(values, times, columns=[''])
-        data = pd.DataFrame(valuesX, valuesY, columns=[''])
-        #print(data)
+        data = pd.DataFrame(values, times, columns=[''])
+        print(data)
         #data = data.rolling(7).mean()
         
-        sns.lineplot(data=data, palette="tab10", linewidth=2.5) .set_title('Straight')
-        
+        sns.lineplot(data=data, palette="tab10", linewidth=2.5)  
         simData.append(turnSample)
-
     #cPickle.dump(simData,open('./simulated_data/sim_trajectories','wb'))
     
    

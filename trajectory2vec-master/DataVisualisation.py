@@ -20,28 +20,22 @@ sampleNum = 10
 def vecClusterAnalysis():
     print ('Our Method')
     trVecs = []
-    #trs = cPickle.load(open('./simulated_data/sim_traj_vec_normal_reverse','rb'))
-    trs = cPickle.load(open('./simulated_data/sim_traj_vec_normal_humanMvtMainGauche_reverse','rb'))
-   
+    trs = cPickle.load(open('./simulated_data/sim_traj_vec_normal_reverse','rb'))
+  
     for tr in trs:
         trVecs.append(tr[0][0])
-
-
-    #print(trVecs)
+        
+   
     X = np.array(trVecs)
-   # print(X)
-   # print(X[:,0])
-   # print(X[:,1])
+
    # X_train , X_test , y_train , y_test = train_test_split ( df . iloc [: ,0: -1] , df . iloc
 #[: , -1] , test_size =0.2)
     X_train , X_test , y_train , y_test = train_test_split(X[:,0: -1],X[:,-1] , test_size =0.2)
 
-    kmeans = KMeans(n_clusters=20, random_state=2016)
-    #y_kmeans5 = kmeans5.fit_predict(trVecs)
-    clusters = kmeans.fit(trVecs).labels_.tolist()
-    plt.scatter(X[:,0],X[:,1], c=clusters, cmap='rainbow')
+    kmeans = KMeans(n_clusters=3, random_state=2016)
+    clusters = kmeans.fit(X).labels_.tolist()
+    plt.scatter(X[:,0],X[:,1], c=kmeans.labels_, cmap='rainbow')
     
-
     
     clustersTrain = kmeans.fit(X_train , y_train).labels_.tolist()
     #print(clustersTrain)
@@ -58,40 +52,47 @@ def vecClusterAnalysis():
     #centers = km.cluster_centers_
     #plt.scatter(centers[:, 0], centers[:, 1], c=color, s=200, alpha=0.5);
     
-    print("CLUSTERS")
+    #print("clusters")
     print(clusters)
     all = 0.
    
-    strt = 0
-    sampleNum = 5
-    for c in range(1,21):
-        m = 0.
-        print(c)
-        print("start")
-        print(strt)
-        print("end")
-        print(sampleNum)
-        l = []
-        print("llllll")
-        print(l)
-       
-        itemTocluster = set(clusters[strt:sampleNum])
-        print(itemTocluster)
-        print('Cluster:  '+ str(c) +' --> ')
-        for i in itemTocluster:
-            l.append([i,clusters[strt:sampleNum].count(i)])
-        print(str(l))
-        m = max([te[1] for te in l])
-        print("MAXXX",m)
-        all = all + m
-        print (float(m)/sampleNum)
-
-        
-        strt = sampleNum
-        sampleNum += 5
+    item = set(clusters[:sampleNum])
     
+    print(item)
+    l = []
+    for i in item:
+        l.append([i,clusters[:sampleNum].count(i)])
+        
+    
+    print ('Straight:  '+ str(l))
+    m = max([te[1] for te in l])
+    print("----------------------")
+    print(m)
+    all = all + m
+    print (float(m)/sampleNum)
+ 
+
+    m = 0.
+    item = set(clusters[sampleNum:sampleNum*2])
+    l = []
+    for i in item:
+        l.append([i,clusters[sampleNum:sampleNum*2].count(i)])
+    print ('Circling:  '+ str(l))
+    m = max([te[1] for te in l])
+    all = all + m
+    print (float(m)/sampleNum)
+
+    m = 0.
+    item = set(clusters[sampleNum*2:sampleNum*3])
+    l = []
+    for i in item:
+        l.append([i,clusters[sampleNum*2:sampleNum*3].count(i)])
+    m = max([te[1] for te in l])
+    print ('bending:   '+ str(l))
+    all = all + m
+    print (float(m)/sampleNum)
     print ('overall')
-    print (all/(sampleNum))
+    print (all/(sampleNum*3))
     #print ('---------------------------------')
 
 
